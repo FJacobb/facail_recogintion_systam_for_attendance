@@ -62,7 +62,7 @@ def home_page():
     frame2 = Frame(home, width=350, height=350, bg="#446bb9")
     frame2.place(x=100, y=70)
     Label(frame2, text="Registration", fg="#fff", bg="#446bb9", font=("Franklin Gothic Heavy", 23, "bold")).place(x=80, y=110)
-    button_lg = Button(frame2, text="register", width=25, pady=7, bg="#fff", fg="#446bb9", border=0, command=reg_page)
+    button_lg = Button(frame2, text="train_test", width=25, pady=7, bg="#fff", fg="#446bb9", border=0, command=reg_page)
     button_lg.place(x=80, y=290)
     button_lg.bind("<Enter>", on_enter)
     button_lg.bind("<Leave>", on_leave)
