@@ -50,6 +50,7 @@ class Signup():
                     my_database = connection.cursor()
                     text = f"INSERT INTO `user`(`id`, `username`, `password`, `email`) VALUES ('{self.id}', '{self.nr}', MD5('{self.pw}'), '{self.em}')"
                     my_database.execute(text)
+                    connection.commit()
                     messagebox.showinfo("Message", "You have successfully created an account.")
                     with open("id.txt", mode="w") as file:
                         file.write(f"{self.id}")
