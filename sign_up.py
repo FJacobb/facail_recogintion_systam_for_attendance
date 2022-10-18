@@ -56,8 +56,6 @@ class Signup():
                         file.write(f"{self.id}")
                     self.signin()
 
-
-
             except Error as e:
                 print(e)
 
