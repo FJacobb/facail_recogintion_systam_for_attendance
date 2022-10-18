@@ -8,7 +8,7 @@ import cv2
 import os
 
 class Signup():
-    def __init__(self):
+    def __init__(self, list_of_output):
         super().__init__()
         self.signup = Toplevel()
         self.signup.title("Sign up")
@@ -21,6 +21,9 @@ class Signup():
         Label(self.signup, image=self.img, bg="#fff").place(x=50, y=50)
         Label(self.signup, text="Student Data Collection", fg="#2B65EC", bg="#fff",
               font=("Franklin Gothic Heavy", 28, "bold")).place(x=220, y=2)
+        self.check_list = list_of_output
+        with open("id.txt", mode="r") as file:
+            self.id = int(file.read())
         self.but()
         self.signup.mainloop()
 
@@ -31,26 +34,41 @@ class Signup():
         self.nr = self.user.get()
         self.pw = self.password.get()
         self.em = self.email.get()
-        self.id = 1
-        try:
-            self.signin()
-            with connect(
-                    host="localhost",
-                    user="root",
-                    password="Fe$tu$245618",
-                    database="project"
 
-            ) as connection:
-                my_database = connection.cursor()
-                my_database.execute(f"INSERT INTO `user`(`id`, `username`, `password`, `email`) VALUES ('{self.id+1}','{self.nr}',MD5('{self.pw}'),'{self.em}')")
-        except Error as e:
-            print(e)
+        userlist = []
+        emaillist = []
+        for i in self.check_list:
+            userlist.append(i[1])
+            emaillist.append(i[-1])
+        if self.nr in userlist or self.em in emaillist:
+            messagebox.showerror("Invalid", "Someone already have this username or Email.")
+
+        elif self.nr != "" and self.pw != "" and self.em != '':
+            self.id = self.id + 1
+            try:
+                with connect(host="localhost", user="root", password="Fe$tu$245618", database="project") as connection:
+                    my_database = connection.cursor()
+                    text = f"INSERT INTO `user`(`id`, `username`, `password`, `email`) VALUES ('{self.id}', '{self.nr}', MD5('{self.pw}'), '{self.em}')"
+                    my_database.execute(text)
+                    messagebox.showinfo("Message", "You have successfully created an account.")
+                    with open("id.txt", mode="w") as file:
+                        file.write(f"{self.id}")
+                    self.signin()
+
+
+
+            except Error as e:
+                print(e)
+
+
 
     def but(self):
         self.frame = Frame(self.signup, width=350, height=350, bg="white")
         self.frame.place(x=480, y=70)
-        self.heading = Label(self.frame, text="Sign up", fg="#57a1f8", bg="#fff", font=("Microsoft YaHei UI Light", 23, "bold"))
+        self.heading = Label(self.frame, text="Sign up", fg="#57a1f8", bg="#fff",
+            font=("Microsoft YaHei UI Light", 23, "bold"))
         self.heading.place(x=110, y=5)
+        # screen = Toplevel(root)  # screen.title("App")  # screen.geometry("925x500+300+200")  # screen.config(bg="white")  #  # Label(screen, text="Hello Everyone", bg="#fff", font=("calibri(Body)", 50, "bold")).pack(expand=True)  # screen.mainloop()
 
         #######################-----------------------username---------------------------------------
 
@@ -102,7 +120,7 @@ class Signup():
         self.email.bind("<FocusOut>", on_leave)
         Frame(self.frame, width=295, height=2, bg="black").place(x=25, y=197)
         #############################################################################################################
-        Button(self.frame, width=36, pady=7, text="Sign up", bg="#57a1f8", fg="#fff", border=0, command=self.signup).place(x=50,
+        Button(self.frame, width=36, pady=7, text="Sign up", bg="#57a1f8", fg="#fff", border=0, command=self.sign_up).place(x=50,
                                                                                                                  y=230)
         label = Label(self.frame, text="Do you have an account?", fg="black", bg="white",
                       font=("Microsoft YaHei UI Light", 9))
