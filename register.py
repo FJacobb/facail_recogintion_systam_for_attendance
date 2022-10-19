@@ -62,17 +62,17 @@ class Register():
                 self.paneeli_image.update()
                 for x, y, w, h in faces:
                     count = count + 1
-                    name = './images/' + str(nameID.get().upper()) + '/' + str(count) + '.jpg'
-                    Label(self.frame2, text="Creating Images........." + name, fg="#fff", bg="#446bb9",
-                          font=("Franklin Gothic Heavy", 8, "bold")).place(x=20,
-                                                                            y=140)
+                    name = './images/AFIT/' +str(dep.get().upper())+"/"+ str(nameID.get().upper()) + '/' + str(count) + '.jpg'
+                    Label(self.frame2, text="Creating Images......" + name, fg="#fff", bg="#446bb9",
+                          font=("Franklin Gothic Heavy", 6, "bold")).place(x=20,
+                                                                            y=160)
                     cv2.imwrite(name, frame[y:y + h, x:x + w])
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                 cv2.waitKey(1)
                 if count > 500:
                     Label(self.frame2, text="Successful Data Collection", fg="#fff", bg="#446bb9",
                           font=("Franklin Gothic Heavy", 10, "bold")).place(x=20,
-                                                                            y=170)
+                                                                            y=180)
                     break
 
             video.release()
@@ -82,7 +82,7 @@ class Register():
             self.register.destroy()
 
         def check():
-            self.path = 'images/' + str(nameID.get().upper())
+            self.path = 'images/AFIT/' +str(dep.get().upper())+"/"+ str(nameID.get().upper())
 
             self.isExist = os.path.exists(self.path)
 
@@ -102,9 +102,34 @@ class Register():
 
         Label(self.frame2, text="Enter Your Student ID: ", fg="#fff", bg="#446bb9",
               font=("Franklin Gothic Heavy", 10, "bold")).place(x=40,
-                                                                y=80)
+                                                           y=120)
+        Label(self.frame2, text="Enter your Department: ", fg="#fff", bg="#446bb9",
+            font=("Franklin Gothic Heavy", 10, "bold")).place(x=40, y=60)
+
+        def on_enter1(e):
+            dep.delete(0, "end")
+
+        def on_leave1(e):
+            name = dep.get()
+            if name == "":
+                dep.insert(0, "cyber security")
+        def on_enter2(e):
+            nameID.delete(0, "end")
+
+        def on_leave2(e):
+            name = nameID.get()
+            if name == "":
+                nameID.insert(0, "AFIT-CYS-18-0027")
+        dep = Entry(self.frame2, width=25, fg="black", border=0, bg="#fff", font=("Microsoft YaHei UI Light", 11))
+        dep.place(x=40, y=80)
+        dep.insert(0, "cyber security")
+        dep.bind("<FocusIn>", on_enter1)
+        dep.bind("<FocusOut>", on_leave1)
         nameID = Entry(self.frame2, width=25, fg="black", border=0, bg="#fff", font=("Microsoft YaHei UI Light", 11))
-        nameID.place(x=40, y=110)
+        nameID.place(x=40, y=140)
+        nameID.insert(0, "AFIT-CYS-18-0027")
+        nameID.bind("<FocusIn>", on_enter2)
+        nameID.bind("<FocusOut>", on_leave2)
 
 
         def on_enter(e):
