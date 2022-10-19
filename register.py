@@ -1,4 +1,5 @@
 from tkinter import *
+import pandas
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import tkinter
@@ -61,7 +62,7 @@ class Register():
                 self.paneeli_image.update()
                 for x, y, w, h in faces:
                     count = count + 1
-                    name = './images/' + str(nameID.get().lower()) + '/' + str(count) + '.jpg'
+                    name = './images/' + str(nameID.get().upper()) + '/' + str(count) + '.jpg'
                     Label(self.frame2, text="Creating Images........." + name, fg="#fff", bg="#446bb9",
                           font=("Franklin Gothic Heavy", 8, "bold")).place(x=20,
                                                                             y=140)
@@ -76,10 +77,12 @@ class Register():
 
             video.release()
             cv2.destroyAllWindows()
+            mg = "You have successfully register (" + str(nameID.get().upper()) + ") ."
+            messagebox.showinfo("Message", mg)
             self.register.destroy()
 
         def check():
-            self.path = 'images/' + str(nameID.get().lower())
+            self.path = 'images/' + str(nameID.get().upper())
 
             self.isExist = os.path.exists(self.path)
 
@@ -87,6 +90,9 @@ class Register():
                 mg = "This student ID ("+str(nameID.get().upper())+") is registered"
                 messagebox.showerror("error", mg)
             else:
+                with open("id of student.txt", mode='a') as file:
+                    fm = str(nameID.get().upper())
+                    file.write(f"{fm}\n")
                 os.makedirs(self.path)
                 cam()
         video = cv2.VideoCapture(0)
@@ -99,6 +105,7 @@ class Register():
                                                                 y=80)
         nameID = Entry(self.frame2, width=25, fg="black", border=0, bg="#fff", font=("Microsoft YaHei UI Light", 11))
         nameID.place(x=40, y=110)
+
 
         def on_enter(e):
             self.button_rg['background'] = "#434cc7"
