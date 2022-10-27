@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import tkinter
 import cv2
 import os
+from train import Train
 
 class Register():
     def __init__(self):
@@ -60,9 +61,11 @@ class Register():
                 self.paneeli_image.configure(image=img_update)
                 self.paneeli_image.image = img_update
                 self.paneeli_image.update()
+                partment = dep.get().upper()
+                id = nameID.get().upper()
                 for x, y, w, h in faces:
                     count = count + 1
-                    name = './images/AFIT/' +str(dep.get().upper())+"/"+ str(nameID.get().upper()) + '/' + str(count) + '.jpg'
+                    name = './images/AFIT/' +str(partment)+"/"+ str(id) + '/' + str(count) + '.jpg'
                     Label(self.frame2, text="Creating Images......" + name, fg="#fff", bg="#446bb9",
                           font=("Franklin Gothic Heavy", 6, "bold")).place(x=20,
                                                                             y=160)
@@ -77,11 +80,13 @@ class Register():
 
             video.release()
             cv2.destroyAllWindows()
-            mg = "You have successfully register (" + str(nameID.get().upper()) + ") ."
+            mg = "You have successfully register (" + str(id) + ") ."
             messagebox.showinfo("Message", mg)
             self.register.destroy()
+            Train()
 
         def check():
+
             self.path = 'images/AFIT/' +str(dep.get().upper())+"/"+ str(nameID.get().upper())
 
             self.isExist = os.path.exists(self.path)
@@ -95,7 +100,7 @@ class Register():
                     file.write(f"{fm}\n")
                 os.makedirs(self.path)
                 cam()
-        video = cv2.VideoCapture(0)
+        video = cv2.VideoCapture(1)
 
         facedetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 

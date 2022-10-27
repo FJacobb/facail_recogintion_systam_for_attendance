@@ -95,7 +95,7 @@ class Signup():
             if name == "":
                 self.password.insert(0, "Password")
 
-        self.password = Entry(self.frame, width=25, fg="black", border=0, bg="#fff", font=("Microsoft YaHei UI Light", 11))
+        self.password = Entry(self.frame, show="*", width=25, fg="black", border=0, bg="#fff", font=("Microsoft YaHei UI Light", 11))
         self.password.place(x=30, y=125)
         self.password.insert(0, "Password")
         self.password.bind("<FocusIn>", on_enter)
