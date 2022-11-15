@@ -4,6 +4,7 @@ from register import Register
 from sign_up import Signup
 import hashlib
 from mysql.connector import connect, Error
+from train import Train
 
 try:
     with connect(host="localhost", user="root", password="Fe$tu$245618", database="project"
@@ -51,7 +52,7 @@ def home_page():
     frame1.place(x=480, y=70)
     Label(frame1, text="Verify User", fg="#fff", bg="#446bb9", font=("Franklin Gothic Heavy", 23, "bold")).place(x=80,
         y=110)
-    button_rg = Button(frame1, text="Verify User", width=25, pady=7, bg="#fff", fg="#446bb9", border=0)
+    button_rg = Button(frame1, text="Verify User", width=25, pady=7, bg="#fff", fg="#446bb9", border=0, command=Train)
     button_rg.place(x=80, y=290)
     button_rg.bind("<Enter>", on_enter)
     button_rg.bind("<Leave>", on_leave)

@@ -7,41 +7,72 @@ import tensorflow as tf
 # import cv2
 # import matplotlib.pyplot as plt
 # import os
-class Train():
-    def __init__(self):
+# class Train():
+#     def __init__(self):
 
-        student_id =[]
-        with open("id of student.txt", mode='r') as file:
-            data = file.read()
-            for i in data.splitlines():
-                student_id.append(i)
+student_id =[]
+listd = []
 
-        # cv2.imread(f"images/{student_id[0]}/1.jpg").shape
+gpus = tf.config.experimental.list_physical_devices("GPU")
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
 
-        train = ImageDataGenerator(rescale=1/255)
-        validation = ImageDataGenerator(rescale=1/255)
-        img = student_id[0]
-        train_dataset = train.flow_from_directory(f"images/AFIT/CYBER SECURITY/", batch_size=3, class_mode="binary", target_size=(148, 148))
-        validation_dataset = validation.flow_from_directory(f"images/AFIT/CYBER SECURITY/", batch_size=3, class_mode="binary", target_size=(148, 148))
-        print(train_dataset.class_indices)
-        model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(16,(3,3), activation = "relu", input_shape=(148, 148, 3)),
-                                            tf.keras.layers.MaxPool2D(2,2),
+with open("id of student.txt", mode='r') as file:
+    data = file.read()
+    for i in data.splitlines():
+        student_id.append(i)
 
-                                            tf.keras.layers.Conv2D(32,(3,3), activation = "relu"),
-                                            tf.keras.layers.MaxPool2D(2,2),
+# cv2.imread(f"images/{student_id[0]}/1.jpg").shape
 
-                                            tf.keras.layers.Conv2D(64, (3, 3), activation="relu"),
-                                            tf.keras.layers.MaxPool2D(2, 2),
 
-                                            tf.keras.layers.Flatten(),
+# for name, value in train_dataset.class_indices.items():
+#
+#     with open("class_names.txt", mode="a") as file:
+#         with open("class_names.txt", mode="r") as chack:
+#             for fg in chack.read():
+#                 listd.append(fg)
+#             if name in fg:
+#                 continue
+#             else:
+#                 file.write(name+"\n")
+#     with open("class_index.txt", mode="a") as file:
+#         file.write(str(value)+"\n")
+#
 
-                                            tf.keras.layers.Dense(512, activation="relu"),
-                                            tf.keras.layers.Dense(1, activation="sigmoid"),
+model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(128,(3,3), 1, activation = "relu", input_shape=(256, 256, 3)),
+                                    tf.keras.layers.MaxPool2D(),
 
-        ])
+                                    tf.keras.layers.Conv2D(64,(3,3), 1, activation = "relu"),
+                                    tf.keras.layers.MaxPool2D(),
 
-        model.compile(loss="binary_crossentropy", optimizer= RMSprop(lr=0.001), metrics=["accuracy"])
-        model.fit(train_dataset, epochs=10, validation_data=validation_dataset)
-        model.save("trained_data")
+                                    tf.keras.layers.Conv2D(32, (3, 3), 1, activation="relu"),
+                                    tf.keras.layers.MaxPool2D(),
 
-        print(validation_dataset.class_indices)
+                                     tf.keras.layers.Conv2D(16, (3, 3), 1, activation="relu"),
+                                     tf.keras.layers.MaxPool2D(),
+
+                                     tf.keras.layers.Flatten(),
+                                    tf.keras.layers.Dense(256, activation="relu"),
+                                    tf.keras.layers.Dense(1, activation="sigmoid")
+
+])
+
+train = ImageDataGenerator(rescale=1/255)
+validation = ImageDataGenerator(rescale=1/255)
+print(train)
+img = student_id[0]
+path = "images/AFIT/CYBER SECURITY/"
+train_dataset = train.flow_from_directory(path, batch_size=3, class_mode="binary", target_size=(256, 256))
+print(train_dataset.class_indices.keys())
+validation_dataset = validation.flow_from_directory(path, batch_size=3, class_mode="binary", target_size=(256, 256))
+print(train_dataset)
+print(train_dataset.class_indices)
+
+
+model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=["accuracy"])
+
+
+model.fit(train_dataset, epochs=1, validation_data=validation_dataset)
+model.save("trained_data.h5")
+#
+print(validation_dataset.class_indices)

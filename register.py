@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 import tkinter
 import cv2
 import os
-from train import Train
+
 
 class Register():
     def __init__(self):
@@ -47,30 +47,29 @@ class Register():
 
         #############___________________________________________
     global video
+
     def facecollect(self):
         global video
-
+        self.button_rg.destroy()
         def cam():
             global frame
             count = 0
+            partment = dep.get().upper()
+            id = nameID.get().upper()
             while True:
                 ret, frame = video.read()
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                faces = facedetect.detectMultiScale(frame, 1.3, 5)
+                faces = facedetect.detectMultiScale(frame, 2.0, 5)
                 img_update = ImageTk.PhotoImage(Image.fromarray(frame))
-                self.paneeli_image.configure(image=img_update)
+                self.paneeli_image.configure(image=img_update, width=350, height=350)
                 self.paneeli_image.image = img_update
                 self.paneeli_image.update()
-                partment = dep.get().upper()
-                id = nameID.get().upper()
                 for x, y, w, h in faces:
                     count = count + 1
                     name = './images/AFIT/' +str(partment)+"/"+ str(id) + '/' + str(count) + '.jpg'
                     Label(self.frame2, text="Creating Images......" + name, fg="#fff", bg="#446bb9",
-                          font=("Franklin Gothic Heavy", 6, "bold")).place(x=20,
-                                                                            y=160)
-                    cv2.imwrite(name, frame[y:y + h, x:x + w])
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+                          font=("Franklin Gothic Heavy", 6, "bold")).place(x=20, y=160)
+                    cv2.imwrite(name, frame[y:(y - 32) + (h + 20), x:(x - 32) + (w + 20)])
                 cv2.waitKey(1)
                 if count > 500:
                     Label(self.frame2, text="Successful Data Collection", fg="#fff", bg="#446bb9",
@@ -83,7 +82,7 @@ class Register():
             mg = "You have successfully register (" + str(id) + ") ."
             messagebox.showinfo("Message", mg)
             self.register.destroy()
-            Train()
+
 
         def check():
 
@@ -100,7 +99,7 @@ class Register():
                     file.write(f"{fm}\n")
                 os.makedirs(self.path)
                 cam()
-        video = cv2.VideoCapture(1)
+        video = cv2.VideoCapture(2)
 
         facedetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
