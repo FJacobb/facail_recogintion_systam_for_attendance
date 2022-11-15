@@ -12,6 +12,9 @@ class Csv:
         self.date = datetime.datetime.now()
         self.date1 = self.date.strftime("%y%b%d")
         self.dic = info
+        with open("log_dats.txt", mode="r") as file:
+            self.check = file.read()
+
         self.tocsv()
     def tocsv(self):
         for name1, value in self.dic.items():
@@ -29,6 +32,7 @@ class Csv:
         df = pd.DataFrame(data)
         name_file = f'attendance({self.date1}).csv'
         date_list.append(name_file)
-        with open("log_dats.txt", mode="a") as file:
-            file.write(name_file)
+        if name_file not in self.check:
+            with open("log_dats.txt", mode="a") as file:
+                file.write(name_file+"\n")
         df.to_csv(f'attendance({self.date1}).csv', index=False, header=True)

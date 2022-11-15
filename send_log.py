@@ -4,7 +4,6 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.application import MIMEApplication
-import os
 class mail:
     def __init__(self):
         mail_content = '''Hello,
@@ -21,17 +20,17 @@ class mail:
         message = MIMEMultipart()
         message['From'] = sender_address
         message['To'] = receiver_address
-        message['Subject'] = 'A test mail sent by Python. It has an attachment.'
+        message['Subject'] = 'Attendance list'
         #The subject line
         #The body and the attachments for the mail
-        for file in os.listdir("C:/Users/festu/OneDrive/Documents/100days of code/festus_project"):
-            if ".csv" in file:
-                attach_file_name = str(file)
+        with open("log_dats.txt", mode="r") as file:
+            dict_name = file.read().split()
+        attach_file_name = str(dict_name[-1])
         print(attach_file_name)
         message.attach(MIMEText(mail_content, 'plain'))
         try:
             with open(attach_file_name, "rb") as attachment:
-                p = MIMEApplication(attachment.read(),_subtype="pdf")
+                p = MIMEApplication(attachment.read(),_subtype="csv")
                 p.add_header('Content-Disposition', "attachment; filename= %s" % attach_file_name)
                 message.attach(p)
         except Exception as e:
