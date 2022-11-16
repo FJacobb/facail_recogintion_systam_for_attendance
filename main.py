@@ -5,6 +5,7 @@ from sign_up import Signup
 import hashlib
 from mysql.connector import connect, Error
 from train import Train
+from test import Test
 
 try:
     with connect(host="localhost", user="root", password="Fe$tu$245618", database="project"
@@ -48,16 +49,30 @@ def home_page():
         button_rg['background'] = "#fff"
         button_rg["foreground"] = "#434cc7"
 
+    def on_enter2(e):
+        button_rg2['background'] = "#434cc7"
+        button_rg2["foreground"] = "#fff"
+
+    def on_leave2(e):
+        button_rg2['background'] = "#fff"
+        button_rg2["foreground"] = "#434cc7"
+
     frame1 = Frame(home, width=350, height=350, bg="#446bb9")
     frame1.place(x=480, y=70)
     Label(frame1, text="Verify User", fg="#fff", bg="#446bb9", font=("Franklin Gothic Heavy", 23, "bold")).place(x=80,
         y=110)
-    button_rg = Button(frame1, text="Verify User", width=25, pady=7, bg="#fff", fg="#446bb9", border=0, command=Train)
-    button_rg.place(x=80, y=290)
+    button_rg = Button(frame1, text="Train model", width=15, pady=7, bg="#fff", fg="#446bb9", border=0, command=Train)
+    button_rg.place(x=50, y=290)
     button_rg.bind("<Enter>", on_enter)
     button_rg.bind("<Leave>", on_leave)
-    Label(frame1, image=img4, bg="#fff").place(x=130, y=10)
 
+    button_rg2 = Button(frame1, text="Verify User", width=15, pady=7, bg="#fff", fg="#446bb9", border=0, command=Test)
+    button_rg2.place(x=185, y=290)
+    button_rg2.bind("<Enter>", on_enter2)
+    button_rg2.bind("<Leave>", on_leave2)
+    Label(frame1, image=img4, bg="#fff").place(x=130, y=10)
+    Label(home, text="click here to view your profile", fg="#fff", bg="#446bb9", font=("Franklin Gothic Heavy", 10, "bold")).place(x=350,
+        y=450)
     ##############_________________________________________
     def on_enter(e):
         button_lg['background'] = "#434cc7"

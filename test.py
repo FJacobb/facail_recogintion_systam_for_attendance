@@ -36,8 +36,8 @@ class Test:
 						return name
 				else:
 					return "unknown"
-
-		while True:
+		play = True
+		while play:
 			sucess, imgOrignal=cap.read()
 			faces = facedetect.detectMultiScale(imgOrignal,1.3,5)
 			for x,y,w,h in faces:
@@ -58,7 +58,8 @@ class Test:
 				if cv2.waitKey(1)==ord('q'):
 					cap.release()
 					cv2.destroyAllWindows()
-
+					play = False
+					break
 
 
 

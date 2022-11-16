@@ -36,8 +36,8 @@ def get_className(classNo):
 				return name
 		else:
 			return "unknown"
-
-while True:
+play = True
+while play:
 	sucess, imgOrignal=cap.read()
 	faces = facedetect.detectMultiScale(imgOrignal,1.3,5)
 	for x,y,w,h in faces:
@@ -56,6 +56,8 @@ while True:
 
 
 		if cv2.waitKey(1)==ord('q'):
+			play = False
 			Csv(mark)
 			cap.release()
 			cv2.destroyAllWindows()
+			break

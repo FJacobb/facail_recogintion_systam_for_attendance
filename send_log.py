@@ -4,10 +4,10 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.application import MIMEApplication
-class mail:
-    def __init__(self):
-        mail_content = '''Hello,
-        This is the attendance list of the student in lecture today.
+class Mail:
+    def __init__(self, faculty, department,receiver_mail):
+        mail_content = f'''Hello,
+        This is the attendance list of the student in lecture today ({faculty}, {department}).
         In this mail we are sending an attachment.
         This attachment is the list of student in lecture.
         Thank You
@@ -15,7 +15,7 @@ class mail:
         #The mail addresses and password
         sender_address = 'projectfestus@gmail.com'
         sender_pass = 'ivpapbtuohicrkur'
-        receiver_address = 'projectfestus@gmail.com'
+        receiver_address = receiver_mail
         #Setup the MIME
         message = MIMEMultipart()
         message['From'] = sender_address
@@ -41,4 +41,4 @@ class mail:
             session.login(user=sender_address, password=sender_pass) #login with mail_id and password
             text = message.as_string()
             session.sendmail(sender_address, receiver_address, text)
-        return "Mail Sent"
+        "Mail Sent"

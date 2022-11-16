@@ -12,8 +12,15 @@ class Csv:
         self.date = datetime.datetime.now()
         self.date1 = self.date.strftime("%y%b%d")
         self.dic = info
-        with open("log_dats.txt", mode="r") as file:
-            self.check = file.read()
+        try:
+            with open("log_dats.txt", mode="r") as file:
+                self.check = file.read()
+        except:
+            with open("log_dats.txt", mode="w") as file:
+                name_file = f'attendance({self.date1}).csv'
+                date_list.append(name_file)
+                file.write(name_file)
+                self.check = name_file
 
         self.tocsv()
     def tocsv(self):
