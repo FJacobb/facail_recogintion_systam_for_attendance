@@ -13,8 +13,8 @@ class Mail:
         Thank You
         '''
         #The mail addresses and password
-        sender_address = 'projectfestus@gmail.com'
-        sender_pass = 'ivpapbtuohicrkur'
+        sender_address = '<example@gmail.com>'
+        sender_pass ='×××××××××××'
         receiver_address = receiver_mail
         #Setup the MIME
         message = MIMEMultipart()
